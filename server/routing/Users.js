@@ -32,7 +32,7 @@ router.post("/login", (req, res)=>{
         }
         delete user.password
         // res.status(200).json(user)
-        const token = jwt.sign({_id: user._id}, process.env.JWT_SECRET,{ expiresIn: "1h"});
+        const token = jwt.sign({_id: user._id}, process.env.JWT_SECRET,{ expiresIn: "1d"});
         const {_id, name, email} = user;
         res.cookie("token", token,{httpOnly: true});
         res.json({ user: { name:name, email:email}});

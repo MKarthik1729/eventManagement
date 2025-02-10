@@ -36,6 +36,7 @@ router.post("/newEvent", upload.any(),verifyToken,async function (req, res) {
         name: req.body.name,
         desc: req.body.desc,
         date: req.body.date,
+        time:req.body.time,
         venue: req.body.venue,
         creator: req.user._id,
         images:  imageUrl,

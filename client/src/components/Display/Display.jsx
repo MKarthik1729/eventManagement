@@ -30,8 +30,8 @@ function Display() {
 
       <section className={styles.log}>
         <div>
-          <p className={log && styles.active} onClick={()=>Change(true)}>Login</p>
-          <p className={!log && styles.active} onClick={()=>Change(false)}>Register</p>
+          <p className={log ? styles.active:""} onClick={()=>Change(true)}>Login</p>
+          <p className={!log ? styles.active:""} onClick={()=>Change(false)}>Register</p>
         </div>
 
         {log && (<div className={styles.login}>

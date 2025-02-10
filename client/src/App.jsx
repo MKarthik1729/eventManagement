@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import Cookies from 'js-cookie'
+
 import { AllEvents, Display, Nav, NewEvent, EditEvent, Welcome, Profile } from './components/Components'
 // import {sty}
 // import reactLogo from './assets/react.svg'
@@ -7,7 +9,8 @@ import { AllEvents, Display, Nav, NewEvent, EditEvent, Welcome, Profile } from '
 // import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  // const [count, setCount] = useState(0)
+  Cookies.set('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2N2E5NjI5NGI2OGI2MGRjOWNmNDAxZmEiLCJpYXQiOjE3MzkxOTk1NTIsImV4cCI6MTczOTI4NTk1Mn0.Us0EPRLZtvJKsg2qmPdMWSSfBRccb6teVTj0RMTIHyw')
 
   return (
     <BrowserRouter>
