@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-// const uploadImages = require('./routing/Cloudinary.js');
+
 
 const app = express();
 require('dotenv').config()
