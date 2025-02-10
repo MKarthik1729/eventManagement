@@ -3,6 +3,7 @@ const router = express.Router();
 const multer = require("multer");
 const Event = require("../Schema/EventSchema");
 const asyncHandler = require("express-async-handler");
+const { verifyToken } = require("./CookieJwtTokwn");
 const cloudinary = require('cloudinary').v2;
 require('dotenv').config(); 
 
@@ -19,18 +20,12 @@ const storage = multer.diskStorage({
     filename: function (req, file, cb) {
         cb(null, file.originalname);
     }
-    // destination: function (req, file, cb) {
-    //     cb(null, "./uploads");
-    // }
 });
 
 const upload = multer({ storage: storage });
 
-// const upload = multer({ 
-//     dest: 'uploads/', // Location where files will be saved
-//  });
 
-router.post("/newEvent", upload.any(),async function (req, res) {
+router.post("/newEvent", upload.any(),verifyToken,async function (req, res) {
     try{
     const images = req.files;
     // console.log(images);
@@ -42,7 +37,7 @@ router.post("/newEvent", upload.any(),async function (req, res) {
         desc: req.body.desc,
         date: req.body.date,
         venue: req.body.venue,
-        creator: req.body.creator,
+        creator: req.user._id,
         images:  imageUrl,
         attendees: req.body.attendees ? req.body.attendees.split(',') : []
     });
@@ -54,9 +49,8 @@ router.post("/newEvent", upload.any(),async function (req, res) {
 catch (error) {
     console.error('Error uploading images:', error);   
     res.status(500).json({ error: error }); 
-}
-    // Event.create({name: req.body.name, desc: req.body.desc, date: req.body.date, venue: req.body.venue, creator: req.body.creator, images: req., attendees: req.body.attendees})       
-    
+    return res.redirect('/login');
+} 
 });
 
 
@@ -71,19 +65,20 @@ router.get("/events",  (req, res) => {
 });
 
 
-router.put("/addImages/:id", upload.any(),async function (req, res) {
+router.put("/addImages/:id", upload.any(),verifyToken,async function (req, res) {
     try{
     const images = req.files;
-    // console.log(images);
+
     const uploadPromises = images.map(image => cloudinary.uploader.upload(image.path, { folder: 'events',resource_type: "auto" }));
     Promise.all(uploadPromises).then((result) => {
     let imageUrl = result.map((result) => result.secure_url);
-    Event.findByIdAndUpdate(req.params.id, { $push : { images:{ $each :imageUrl}} }, { new: true })
+    Event.findOneAndUpdate({_id:req.params.id,creator:req.user._id}, { $push : { images:{ $each :imageUrl}} }, { new: true })
     .then((event) => {
         res.status(200).json(event);
     })  
     .catch((err) => {
-        res.status(500).json({ error: err });
+        res.status(500);
+        return res.redirect('/login');
     });
     });
     
@@ -96,25 +91,29 @@ catch (error) {
     
 });
 
-router.delete("/deleteImage/:id",  (req, res) => {  
-    Event.findByIdAndUpdate(req.params.id, { $pull : { images: req.body.image } }, { new: true })
+router.delete("/deleteImage/:id",verifyToken,  (req, res) => {  
+    Event.findOneAndUpdate({_id:req.params.id,creator:req.user._id}, { $pull : { images: req.body.image } }, { new: true })
     .then((event) => {
         res.status(200).json(event);
     })
     .catch((err) => {
-        res.status(500).json({ error: err });
+        res.status(500);
+        res.clearCookie("token");
+        return res.redirect('/login');
     });
 }
 );
 
-router.delete("/deleteEvent/:id",  (req, res) => {
+router.delete("/deleteEvent/:id",verifyToken,  (req, res) => {
 
-    Event.findByIdAndDelete(req.params.id)
+    Event.findOneAndDelete({_id:req.params.id,creator:req.user._id})
     .then((event) => {
         res.status(200).json(event);
     })
     .catch((err) => {
-        res.status(500).json({ error: err });
+        res.status(500);
+        res.clearCookie("token");
+        return res.redirect('/login');
     });
 });
 
@@ -126,22 +125,27 @@ router.get("/events/:id",  (req, res) => {
         })
         .catch((err) => {
             res.status(500).json({ error: err });
+            res.clearCookie("token");
+            return res.redirect('/login');
         });
 });
 
 
-router.put("/events/:id",  (req, res) => {
-Event.findByIdAndUpdate(req.params.id, req.body, {new: true})
+router.put("/events/:id",verifyToken,  (req, res) => {
+    console.log(req.user._id);
+Event.findOneAndUpdate({_id:req.params.id, creator:req.user._id}, req.body, {new: true})
     .then((event) => {
         res.status(200).json(event);
     })
     .catch((err) => {
         res.status(500).json({ error: err });
+        res.clearCookie("token");
+        return res.redirect('/login');
     });
 });
 
 
-router.get("/getAllImages", async  (req, res) =>{
+router.get("/getAllImages", async (req, res) =>{
     try {
         const result = await cloudinary.api.resources({
             type: 'upload',
@@ -155,6 +159,7 @@ router.get("/getAllImages", async  (req, res) =>{
     } catch (error) {
         console.error("Error fetching images:", error);
         res.status(500).json({ error: "Failed to fetch images" });
+
     }
 });
 

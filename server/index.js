@@ -7,15 +7,13 @@ const app = express();
 require('dotenv').config()
 
 const Users =require('./routing/Users.js')
-const Events = require('./routing/Events.js')
+const Events = require('./routing/Events.js');
+const { json } = require('body-parser');
+const cookieParser = require('cookie-parser');
 
-
-// Run the function
-// uploadImages(['./routing/image.png','./routing/image.png','./routing/image.png']);
-
-
-
+app.use(json());
 app.use(cors());
+app.use(cookieParser())
 app.use(express.json());
 app.use(express.urlencoded({ extended: false}));
 
