@@ -1,12 +1,19 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+// const uploadImages = require('./routing/Cloudinary.js');
 
 const app = express();
 require('dotenv').config()
 
 const Users =require('./routing/Users.js')
 const Events = require('./routing/Events.js')
+
+
+// Run the function
+// uploadImages(['./routing/image.png','./routing/image.png','./routing/image.png']);
+
+
 
 app.use(cors());
 app.use(express.json());

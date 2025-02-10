@@ -9,7 +9,7 @@ const exp = require("constants");
 // console.log("azerty");
 router.post("/register", (req, res)=>{
     const {name, email, password} = req.body;
-    console.log(name,email);
+    // console.log(name,email);
 
     if(!name || !email || !password){
         return res.status(422).json({error: "Please fill all the fields"});
@@ -18,7 +18,7 @@ router.post("/register", (req, res)=>{
     newUser.save().then(()=>{
         return res.status(200).json({message: "User registered successfully"});
     })
-    .catch((err)=>{ return res.status(422).json({error: "Email already exists"})});
+    .catch((err)=>{ return res.status(422).json({error: "Email or User already exists"})});
 
 
 });
@@ -30,7 +30,7 @@ router.post("/login", (req, res)=>{
         return res.status(422).json({error: "Please fill all the fields"});
     }
     User.findOne({email: email}).then((user)=>{
-        console.log(user);
+        // console.log(user);
         // if(!user){
         //     return res.status(422).json({error: "Invalid Email or Password1"});
         // }
