@@ -12,6 +12,10 @@
   color: #505050;
   background-color: azure;
 }
+div{
+  margin: 0;
+  padding: 0;
+}
 
 /* a {
   font-weight: 500;

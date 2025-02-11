@@ -1,0 +1,56 @@
+.event{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    width: 100%;
+        border: 1px solid grey  ;
+        margin: 5%;
+    
+    div{
+        padding: 30px;
+        padding-top: 0;
+        display: block;
+        width: 25vw;
+
+        background-color: azure;
+        img{
+            width: 25vw;
+            height: 60vh;
+        }
+        div{
+            display: flex;
+            text-align: center;
+            justify-content: center;
+
+            li{
+                font-size: 2.5em;
+                color: rgb(190, 187, 187);
+            }
+            .active{
+                color: rgb(65, 65, 65);
+            }
+        }
+    }
+    .data{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        height: 60vh;
+        footer{
+            display: flex;
+            justify-content: space-around;
+            button{
+                padding: 10px 40px;
+                border-radius: 5px;
+                border: 1px solid grey;
+                background-color: rgb(227, 162, 142);
+                font-size: 2em;
+                color: aliceblue;
+                &:hover{
+                    background-color: rgb(255, 66, 66);
+                }
+            }
+        }
+    }
+}

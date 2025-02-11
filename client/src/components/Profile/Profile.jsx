@@ -1,32 +1,39 @@
 import React from 'react'
-import { useEffect,useState } from 'react'
+import { useEffect, useState } from 'react'
+import styles from './Profile.module.scss'
 import axios from 'axios'
+import Event from './Event'
 
 function Profile() {
+  const [event, setEvent] = useState()
   const [events, setEvents] = useState()
+  // const [image, setImage] = useState()
 
   useEffect(() => {
     axios.get(`/myevents/67a8633512a9451a3e38a1d5`).then((response) => {
-      console.log(response.data)
       setEvents(response.data)
+      setEvent(response.data[0])
+      // setImage(response.data[0].images[0])
     })
   }, [])
 
   return (
-    <div>
-      {events && events.map((event) => {
-        return (
-          <div key={event._id}>
-            <h1>{event.name}</h1>
-            <p>{new Date(event.date).toISOString().split("T")[0]}
-</p>
-            <p>{event.desc}</p>
-            {event.images.map((image) => { 
-              return <img key={image} style={{"width":"200px"}} src={image} alt='event' />
-             })}
-          </div>
-        )
-      })}
+    <div className={styles.container}>
+      <section className={styles.profile}>
+        <ul>
+        <li>Karthik</li>
+        <li>karthik@gmail.com</li>
+        </ul>
+        <ol>
+          {events && events.map((even) => {
+            return <li key={even._id} onClick={()=>{setEvent(even);setImage(even.images[[0]])}} className={event.name===even.name?styles.active:""} >{even.name}</li>
+          })}
+        </ol>
+      </section> 
+      <section>
+      {event && <Event event={event} imag={event.images[0]}  />
+        }
+      </section>
     </div>
   )
 

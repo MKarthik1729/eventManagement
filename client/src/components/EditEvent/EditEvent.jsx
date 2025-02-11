@@ -1,24 +1,26 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import styles from './edit.module.scss'
 
 function EditEvent() {
   const [event, setEvent] = useState()
   const {id}=useParams()
-  // console.log(id)
 
 
     useEffect(() => {
-      // console.log("cool",id)
     axios.get(`/events/${id}`).then((response) => {
-      // console.log(response.data[0])
+      response.data[0].images = [...response.data[0].images,...response.data[0].images,...response.data[0].images,...response.data[0].images]
       setEvent(response.data[0])
     })
   }, [])
 
   return (
-    <div>
-      {event && <form>
+    <div className={styles.editing}>
+      {event && 
+      
+      <div  className={styles.edit}>
+      <form >
       <label >Event Name
       <input type="text" name="name" defaultValue={event.name} />
       </label>
@@ -38,13 +40,25 @@ function EditEvent() {
         Venue 
         <input type="text" name="venue" defaultValue={event.venue}/>
       </label>
-      <label>
-        Images 
-        <input type="file" multiple name="images" />
-      </label>
-      <button type="submit">Create Event</button>
+      <button type="submit">Edit Event</button>
 
       </form>
+      </div>
+      }
+      {
+        event && <div className={styles.images}>
+          {/* <h2>Images</h2> */}
+          {
+            event.images.map(img=>{
+              return <div>
+                <img src={img} />
+                <p>delete</p>
+                </div>
+            })
+          }
+
+        </div>
+
       }
     </div>
   )
