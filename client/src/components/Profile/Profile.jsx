@@ -1,6 +1,6 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
-import styles from './Profile.module.scss'
+import styles from './profile.module.scss'
 import axios from 'axios'
 import Event from './Event'
 
