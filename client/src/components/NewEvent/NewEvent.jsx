@@ -19,7 +19,7 @@ function NewEvent() {
       </label>
       <label>
         Images 
-        <input type="file" name="images" />
+        <input type="file" multiple name="images" />
       </label>
       <button type="submit">Create Event</button>
 

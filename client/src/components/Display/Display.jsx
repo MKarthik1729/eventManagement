@@ -14,7 +14,7 @@ function Display() {
       <section className={styles.intro}>
       {/* <h1>Display</h1> */}
       <h2>Effortless Event Management at Your Fingertips</h2>
-<p>Welcome to [Your Platform Name], the ultimate event management platform designed to help you create, organize, and attend events seamlessly. Whether you're planning a corporate seminar, a music festival, or a casual meetup, our platform makes it easy to bring people together.</p>
+<p>Welcome to EventHub, the ultimate event management platform designed to help you create, organize, and attend events seamlessly. Whether you're planning a corporate seminar, a music festival, or a casual meetup, our platform makes it easy to bring people together.</p>
 
 <p>Why Choose Us?</p>
 <p>✅ Simple & Secure Authentication – Register, log in, or use our Guest Mode for quick access.</p>

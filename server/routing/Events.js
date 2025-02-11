@@ -120,6 +120,18 @@ router.delete("/deleteEvent/:id",verifyToken,  (req, res) => {
 
 
 router.get("/events/:id",  (req, res) => {
+    Event.find({_id:req.params.id})
+        .then((events) => {
+            res.status(200).json(events);
+        })
+        .catch((err) => {
+            res.status(500).json({ error: err });
+            res.clearCookie("token");
+            return res.redirect('/login');
+        });
+});
+
+router.get("/myevents/:id",  (req, res) => {
     Event.find({creator: req.params.id})
         .then((events) => {
             res.status(200).json(events);

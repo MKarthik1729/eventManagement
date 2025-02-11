@@ -6,7 +6,7 @@ function AllEvents() {
   const [events, setEvents] = useState()
 
   useEffect(() => {
-    axios.get('http://localhost:3000/events').then((response) => {
+    axios.get('/events').then((response) => {
       console.log(response.data)
       setEvents(response.data)
     })
